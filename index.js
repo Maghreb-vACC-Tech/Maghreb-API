@@ -42,14 +42,8 @@ var app = express();
                     prev => prev.callsigned === current.callsigned && prev.cid === current.cid)
                     );
                 
-                if (onlineCallsigns.lenght == 0){
-                  console.log(onlineCallsigns)
                   res.send(onlineCallsigns)
 
-                }
-                else{
-                res.send("No Callsign Found")
-                }
                     
               }
             })
