@@ -41,8 +41,12 @@ var app = express();
                   current => !previousCallsigns.some(
                     prev => prev.callsigned === current.callsigned && prev.cid === current.cid)
                     );
-                
+                if (onlineCallsigns != "" ){
                   res.send(onlineCallsigns)
+                }
+                else{
+                  res.send("No controllers")
+                }
 
                     
               }
