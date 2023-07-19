@@ -18,8 +18,6 @@ var app = express();
           fetch('https://data.vatsim.net/v3/vatsim-data.json', { timeout: 5000 }) // fetch data from vatsim api
             .then(data => data.json())
             .then(response => {
-
-              
               if (response.controllers)// Check if response.controllers exist to execute code   
               {
 
@@ -39,8 +37,10 @@ var app = express();
       
                 const onlineCallsigns = currentCallsigns.filter(
                   current => !previousCallsigns.some(
-                    prev => prev.callsigned === current.callsigned && prev.cid === current.cid)
-                    );
+                    prev => prev.callsigned === current.callsigned && prev.cid === current.cid
+                    )
+                  );
+
                 if (onlineCallsigns != "" ){
                   res.send(onlineCallsigns)
                 }
