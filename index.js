@@ -1,7 +1,16 @@
 const express = require('express')
+const cors = require('cors');
+const bodyParser = require('body-parser');
 
 var app = express();
 
+// Configure body-parser middleware
+app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.json());
+
+// Configure CORS
+app.use(cors());
+app.use(cors({origin: '*'}));
 
 // This responds with "Hello World" on the homepage
 
@@ -212,7 +221,52 @@ var app = express();
     })
 
     
+// Booking
+  app.get('/MaghrebBooking' , function ( req , res){
+    fetch("https://atc-bookings.vatsim.net/api/booking")
+    .then(data => data.json())
+    .then(data => res.send(data))
+  })
+  
+  app.post('/AddMaghrebBooking', function (req, res) {
+    const url = 'https://atc-bookings.vatsim.net/api/booking'; // Replace with your API endpoint URL
+    const token = '04c332fb707d9c6e2172c04f92fa33fb'; // Replace with your bearer token
+  
+    const postData = req.body;
+  
+    // console.log(postData);
+  
+    
+    fetch(url, {
+      method: 'POST',
+      headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
+      },
+      body: JSON.stringify(postData)
+      })
+    // Rest of your code here
+  });
 
+  app.delete('/DeleteMaghrebBooking', function (req, res) {
+    const url = 'https://atc-bookings.vatsim.net/api/booking/18688'; // Replace with your API endpoint URL
+    const token = '04c332fb707d9c6e2172c04f92fa33fb'; // Replace with your bearer token
+  
+    const postData = req.body;
+  
+    // console.log(postData);
+  
+    
+    fetch(url, {
+      method: 'DELETE',
+      headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
+      },
+      body: JSON.stringify(postData)
+      })
+    // Rest of your code here
+  });
 // Membership solution is to use the /LookupCid/:cid endpoint and fetch 
 // users from the first one to the last one and check if there subdivision is MAG 
 
