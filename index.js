@@ -16,6 +16,11 @@ app.use(cors({origin: '*'}));
 
 // This responds a POST request for the homepage
 
+// Test
+app.post('/authcode' , (req , res)=>{
+  res.send("good")
+})
+
 // AtcActivity
   app.get('/AtcActivity', function (req, res) {
 
