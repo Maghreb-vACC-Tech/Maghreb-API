@@ -17,8 +17,64 @@ app.use(cors({origin: '*'}));
 // This responds a POST request for the homepage
 
 // Test
-app.post('/authcode' , (req , res)=>{
-  res.send("good")
+app.get('/authcode' , (req , res)=>{
+  console.log("------------------------------------------------------");
+
+  let accessToken = '';
+
+  // GET AUTHORIZATION CODE
+  const code = req.query.code;
+  console.log("code :", code);
+  let data = {
+    "grant_type": "authorization_code",
+    "client_id": 619,
+    "client_secret": "ZK9lA32BOoEq4BxpYCjtHrnz0KM9MwOetHWbRtxE",
+    "redirect_uri": "http://localhost:1000/authcode",
+    code,
+  };
+  console.log("------------------------------------------------------");
+
+
+
+
+  // GET TOKEN
+  fetch('https://auth-dev.vatsim.net/oauth/token', {
+    method: 'POST',
+    headers: {
+      'Accept': 'application/json',
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(data)
+  })
+    .then(res => res.json())
+    .then(tokenData => {
+      accessToken = tokenData.access_token.toString();
+      console.log(tokenData);
+
+
+
+
+
+    // FETCH DATA
+    return fetch('https://auth-dev.vatsim.net/api/user', {
+      method: 'GET',
+      headers: {
+        'Authorization':`Bearer ${accessToken}`,
+        'Accept':'application/json'
+      },
+    });
+    })
+    .then(res => res.json())
+    .then(userData => {
+      // Use user data
+      console.log(userData);
+      res.send(userData);
+    })
+    .catch(error => {
+      // Handle any errors
+      console.error(error);
+      res.status(500).send('Internal Server Error');
+    });
 })
 
 // AtcActivity
