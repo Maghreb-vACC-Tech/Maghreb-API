@@ -11,13 +11,73 @@ app.use(bodyParser.json());
 // Configure CORS
 app.use(cors());
 app.use(cors({origin: '*'}));
-
 // This responds with "Hello World" on the homepage
 
 // This responds a POST request for the homepage
 
-// Test
-app.get('/authcode' , (req , res)=>{
+// GetStats
+app.post('/stats', (req, res) => {
+  const CID = req.body;
+
+  const response = {
+    atc: 0,
+    pilot: 0
+  };
+  fetch(`https://api.vatsim.net/v2/members/${CID.cid}/stats`)
+    .then(response => response.json())
+    .then(data => {
+      response.atc = data.atc;  
+      response.pilot = data.pilot;
+
+      res.json(response);
+    })
+    .catch(error => {
+      console.error("Error:", error);
+      res.status(500).json(response);
+    });
+
+});
+app.post('/LastFlightTime' , (req , res) => {
+  
+  const response = {
+    start: 0,
+    end: 0
+  };
+
+  const CID = req.body;
+  fetch(`https://api.vatsim.net/v2/members/${CID.cid}/history`)
+    .then(data => data.json())
+    .then(data => 
+      {
+        
+      response.start = data.items[0].start;  
+      response.end = data.items[0].end;
+
+      res.json(response)
+
+      })
+
+  })
+app.post('/ATC' , ( req , res ) => {
+  // https://api.vatsim.net/v2/members/1674212/stats
+  
+  // const response = {
+  //   start: 0,
+  //   end: 0
+  // };
+
+  const CID = req.body;
+  fetch(`https://api.vatsim.net/v2/members/${CID.cid}/atc`)
+    .then(data => data.json())
+    .then(data => res.json(data))
+
+  })
+
+
+
+// OAuth2.0
+app.get('/authcode' , (req , res) => {
+  
   console.log("------------------------------------------------------");
 
   let accessToken = '';
@@ -49,7 +109,7 @@ app.get('/authcode' , (req , res)=>{
     .then(res => res.json())
     .then(tokenData => {
       accessToken = tokenData.access_token.toString();
-      console.log(tokenData);
+      console.log("Token Data : " , tokenData);
 
 
 
@@ -64,18 +124,23 @@ app.get('/authcode' , (req , res)=>{
       },
     });
     })
+
     .then(res => res.json())
+
     .then(userData => {
       // Use user data
-      console.log(userData);
-      res.send(userData);
+      console.log(userData)
+      let Data = JSON.stringify(userData)
+      const encodedData = encodeURIComponent(JSON.stringify(Data));
+      res.redirect(`http://localhost:3000/extractor?data=${encodedData}`);
     })
+
     .catch(error => {
       // Handle any errors
       console.error(error);
       res.status(500).send('Internal Server Error');
     });
-})
+  })
 
 // AtcActivity
   app.get('/AtcActivity', function (req, res) {
@@ -229,57 +294,91 @@ app.get('/authcode' , (req , res)=>{
   app.get('/VatmenaEvents' , function ( req , res ) // Vatmena
   {
     
+    
+    fetch('https://my.vatsim.net/api/v1/events/all')
+    .then(response => {
+      if (!response.ok) {
+        throw new Error('Network response was not ok');
+      }
+      return response.json();
+    })
+    .then(data => {
+      const eventArray = data.data;
+      const eventResponse = [];
 
-    fetch("https://my.vatsim.net/api/v1/events/all")
-    .then( response => response.json())
-    .then( response => {
-
-      const EventArray = response.data
-      let EventResponse = []
-
-      for( let i = 0 ; i <= EventArray.length ; i++ ){
+      for (let i = 0; i < eventArray.length; i++) {
         try {
-          if (EventArray[i].organisers[0].division == "MENA"){
-            EventResponse.push(EventArray[i])
+          if (eventArray[i].organisers[0].division === 'MENA') {
+            eventResponse.push(eventArray[i]);
           }
         } catch (error) {
-          
+          // Handle error if the necessary property is missing in the event object
         }
-
       }
-      
 
-      res.send(EventResponse)
+      console.log(eventResponse);
     })
+    .catch(error => {
+      console.error('Error:', error);
+    });
+ 
 
   })
 
-  app.get('/MaghrebEvents' , function ( req , res ) {
+  app.get('/MaghrebEvents', function (req, res) {
+
+
 
     fetch("https://my.vatsim.net/api/v1/events/all")
-    .then( response => response.json())
-    .then( response => {
-      
-      
-      const EventArray = response.data
-      let EventResponse = []
+    .then(data => {
+      if(data.headers.get('content-type').includes('application/json')) {
+        return data.json();
+      } else {
+        // throw new Error("Response is not JSON"); 
+      }
+    })
+      .then( data => {
+        const eventArray = data.data;
+          const eventResponse = [];
+    
+          for (let i = 0; i < eventArray.length; i++) {
+            try {
+              if (eventArray[i].organisers[0].division === "MENA") {
+                eventResponse.push(eventArray[i]);
+              }
+            } catch (error) {
+              // Handle error if the necessary property is missing in the event object
+              if (!response.ok) {
+                    console.log('API request zbi');
+                  }
+              else{
+                console.log(error)
+              }
 
-      for( let i = 0 ; i <= EventArray.length ; i++ ){
-        try {
-          if (EventArray[i].organisers[0].division == "MENA" ){
-            EventResponse.push(EventArray[i])
+            
           }
-        } catch (error) {
-          
         }
 
-      }
-      
 
-      res.send(EventResponse)
-    })
+        // const filteredResponse = eventResponse.filter(item =>
+        //   .test(eventResponse[0].airports[0].icao)
 
-    })
+        //  )
+
+        
+        const filteredResponse = eventResponse.filter(event => {
+          return event.airports.some(airport => {
+            return /^(DAAA|DAAD|DAAE|DAAG|DAAJ|DAAK|DAAP|DAAS|DAAT|DAAV|DABB|DABC|DABS|DABT|DAOB|DAOF|DAOI|DAOL|DAON|DAOO|DAOR|DAOV|DAOY|DATG|DATM|DAUA|DAUB|DAUE|DAUG|DAUH|DAUI|DAUK|DAUO|DAUT|DAUU|DAUZ|DTKA|DTMB|DTNH|DTTA|DTTB|DTTF|DTTG|DTTI|DTTJ|DTTX|DTTZ|GMMM|GMAC|GMAD|GMAG|GMAT|GMAZ|GMFB|GMFF|GMFI|GMFK|GMFM|GMFO|GMFZ|GMMA|GMMB|GMMD|GMME|GMMH|GMMI|GMML|GMMN|GMMT|GMMW|GMMX|GMMZ|GMTA|GMTN|GMTT)/.test(airport.icao);
+          });
+        });
+
+        res.send(filteredResponse);
+      })
+
+  });
+
+
+
 
     
 // Booking
