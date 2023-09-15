@@ -327,8 +327,6 @@ app.get('/authcode' , (req , res) => {
 
   app.get('/MaghrebEvents', function (req, res) {
 
-
-
     fetch("https://my.vatsim.net/api/v1/events/all")
     .then(data => {
       if(data.headers.get('content-type').includes('application/json')) {
@@ -349,7 +347,7 @@ app.get('/authcode' , (req , res) => {
             } catch (error) {
               // Handle error if the necessary property is missing in the event object
               if (!response.ok) {
-                    console.log('API request zbi');
+                    console.log('API request Not OK');
                   }
               else{
                 console.log(error)
@@ -385,16 +383,43 @@ app.get('/authcode' , (req , res) => {
   app.get('/MaghrebBooking' , function ( req , res){
     fetch("https://atc-bookings.vatsim.net/api/booking")
     .then(data => data.json())
-    .then(data => res.send(data))
+    .then(data => {
+      // 
+
+      // // console.log(data[0].subdivision)
+      // if(data.subdivision?.includes("MAG")){
+      // }
+      
+      const filteredData = data.filter(item => item.subdivision);
+      const BookingArray = []
+      filteredData.forEach(item => {
+        if(item.subdivision.includes("MAG")) {
+
+          handleMatch(item);
+          BookingArray.push(item)
+
+        }
+      });
+
+      function handleMatch(item) {
+        // process matched item
+        console.log("Match:", item);
+      }
+
+      res.send(BookingArray);
+    })
+
+    
   })
   
   app.post('/AddMaghrebBooking', function (req, res) {
     const url = 'https://atc-bookings.vatsim.net/api/booking'; // Replace with your API endpoint URL
     const token = '04c332fb707d9c6e2172c04f92fa33fb'; // Replace with your bearer token
   
+    // const postData = req.body.Data;
     const postData = req.body;
   
-    // console.log(postData);
+    console.log(postData.Data);
   
     
     fetch(url, {
@@ -403,9 +428,9 @@ app.get('/authcode' , (req , res) => {
           'Content-Type': 'application/json',
           'Authorization': `Bearer ${token}`
       },
-      body: JSON.stringify(postData)
+      body: JSON.stringify(postData.Data)
       })
-    // Rest of your code here
+    console.log("done")
   });
 
   app.delete('/DeleteMaghrebBooking', function (req, res) {
