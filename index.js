@@ -143,7 +143,7 @@ app.get('/authcode' , (req , res) => {
   })
 
 // AtcActivity
-  app.get('/AtcActivity', function (req, res) {
+app.get('/AtcActivity', function (req, res) {
 
       let previousCallsigns = [];
 
@@ -240,7 +240,7 @@ app.get('/authcode' , (req , res) => {
   })
 
 // metarLookup
-  app.get('/metarLookup/:airport', async function (req, res) {
+app.get('/metarLookup/:airport', async function (req, res) {
 
     const airport = req.params.airport
     const url = `https://api.checkwx.com/metar/${airport}/decoded`;
@@ -278,7 +278,7 @@ app.get('/authcode' , (req , res) => {
   });
 
 // Lookup CID
-  app.get('/LookupCid/:cid', function (req, res) {
+app.get('/LookupCid/:cid', function (req, res) {
     
       const cid = req.params.cid;
 
@@ -291,7 +291,7 @@ app.get('/authcode' , (req , res) => {
   })
 
 // Events Picker
-  app.get('/VatmenaEvents' , function ( req , res ) // Vatmena
+app.get('/VatmenaEvents' , function ( req , res ) // Vatmena
   {
     
     
@@ -316,7 +316,12 @@ app.get('/authcode' , (req , res) => {
         }
       }
 
-      console.log(eventResponse);
+      const sortedEvents = eventResponse.sort((a, b) => {
+        return new Date(a.start_time) - new Date(b.start_time); 
+      });
+
+      console.log(sortedEvents);
+      res.send(sortedEvents);
     })
     .catch(error => {
       console.error('Error:', error);
@@ -325,7 +330,7 @@ app.get('/authcode' , (req , res) => {
 
   })
 
-  app.get('/MaghrebEvents', function (req, res) {
+app.get('/MaghrebEvents', function (req, res) {
 
     fetch("https://my.vatsim.net/api/v1/events/all")
     .then(data => {
@@ -380,7 +385,15 @@ app.get('/authcode' , (req , res) => {
 
     
 // Booking
-  app.get('/MaghrebBooking' , function ( req , res){
+app.get('/MagBookTest' , function ( req , res ){
+  fetch("https://atc-bookings.vatsim.net/api/booking")
+  .then( data => data.json())
+  .then( data => {
+    console.log(data)
+    res.send(data)
+  })
+})
+app.get('/MaghrebBooking' , function ( req , res){
     fetch("https://atc-bookings.vatsim.net/api/booking")
     .then(data => data.json())
     .then(data => {
@@ -412,7 +425,7 @@ app.get('/authcode' , (req , res) => {
     
   })
   
-  app.post('/AddMaghrebBooking', function (req, res) {
+app.post('/AddMaghrebBooking', function (req, res) {
     const url = 'https://atc-bookings.vatsim.net/api/booking'; // Replace with your API endpoint URL
     const token = '04c332fb707d9c6e2172c04f92fa33fb'; // Replace with your bearer token
   
