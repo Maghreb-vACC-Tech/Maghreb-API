@@ -447,12 +447,13 @@ app.post('/AddMaghrebBooking', function (req, res) {
   });
 
   app.delete('/DeleteMaghrebBooking', function (req, res) {
-    const url = 'https://atc-bookings.vatsim.net/api/booking/18688'; // Replace with your API endpoint URL
+    
+    const postData = req.body;
+    const url = `https://atc-bookings.vatsim.net/api/booking/${JSON.stringify(postData.id)}`; // Replace with your API endpoint URL
     const token = '04c332fb707d9c6e2172c04f92fa33fb'; // Replace with your bearer token
   
-    const postData = req.body;
   
-    // console.log(postData);
+    console.log(url);
   
     
     fetch(url, {
