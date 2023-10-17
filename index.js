@@ -1,8 +1,21 @@
 const express = require('express')
 const cors = require('cors');
 const bodyParser = require('body-parser');
+const axios = require('axios');
+const mysql = require('mysql2')
+
+var con = mysql.createConnection({
+  host: "localhost",
+  user: "root",
+  password: "",
+  database: "maghreb"
+});
+
+
+
 
 var app = express();
+
 
 // Configure body-parser middleware
 app.use(bodyParser.urlencoded({ extended: false }));
@@ -14,6 +27,22 @@ app.use(cors({origin: '*'}));
 // This responds with "Hello World" on the homepage
 
 // This responds a POST request for the homepage
+
+app.get('/message', (req, res) => {
+  fetch('http://localhost:5000/message')
+  .then(response => {
+    if(!response.ok) {
+      throw new Error('Failed to fetch');
+    }
+    return response.json();
+  })
+  .then(data => {
+    res.send(data);
+  })
+  .catch(error => {
+    console.log(error); 
+  });
+})
 
 // GetStats
 app.post('/stats', (req, res) => {
@@ -469,7 +498,161 @@ app.post('/AddMaghrebBooking', function (req, res) {
 // Membership solution is to use the /LookupCid/:cid endpoint and fetch 
 // users from the first one to the last one and check if there subdivision is MAG 
 
+//* API FOR MEMBER ROSTER \\
 
+const ratingMap = {
+  '-1': 'INA',
+  1: 'OBS',
+  2: 'S1',
+  3: 'S2',
+  4: 'S3',
+  5: 'C1',
+  6: 'C2',
+  7: 'C3',
+  8: 'I1',
+  9: 'I2',
+  10: 'I3',
+  11: 'SUP',
+  12: 'ADM',
+};
+
+app.get('/members', async (req, res) => {
+  try {
+    const response = await axios.get('https://api.vatsim.net/v2/orgs/subdivision/MAG', {
+      headers: {
+        'X-API-Key': 'd8128629-921e-4c20-9ab1-b4517e8b77d2'
+      }
+    });
+    const people = response.data.items.map(item => ({
+        id: item.id,
+        name_first: item.name_first,
+        name_last: item.name_last,
+        rating: ratingMap[item.rating.toString()]
+      }));
+    res.json(people);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: 'Internal Server Error' });
+  }
+});
+
+
+
+
+
+
+// *Training Involves my SQL
+
+
+app.get('/GetTrainee/:cid', (req,res) => {
+  const cid = req.params.cid
+  const url = "SELECT * FROM trainee WHERE cid = '" + cid + "'"
+
+  con.connect(function(err) {
+    if (err) throw err;
+    con.query(url, function (err, result) {
+      if (err) throw err;
+      res.send(result);
+    });
+  });
+  
+})
+
+app.get('/GetTraineeATC/:cid' , ( req , res ) => {
+  // https://api.vatsim.net/v2/members/1674212/stats
+  
+  // const response = {
+  //   start: 0,
+  //   end: 0
+  // };
+
+  const Data = req.params.cid;
+
+  const url = `https://api.vatsim.net/v2/members/${Data}/stats`
+  console.log(url)
+  fetch(url)
+    .then(data => data.json())
+    .then(data => res.json(data))
+  })
+
+app.get('/GetTrainee', (req,res) => {
+  
+  const url = "SELECT * FROM trainee"
+  con.connect(function(err) {
+    if (err) throw err;
+    con.query(url, function (err, result) {
+      if (err) throw err;
+      res.send(result);
+    });
+  });
+  
+})
+// *Get trainnee with id
+app.get('/GetTraineeid/:id', (req,res) => {
+  const ID = req.params.id;
+  
+  const url = `SELECT * FROM trainee WHERE id =${ID}`
+  con.connect(function(err) {
+    if (err) throw err;
+    con.query(url, function (err, result) {
+      if (err) throw err;
+      res.send(result);
+    });
+  });
+  
+})
+// *Get Trainnee with CID
+app.get('/GetTrainee/:cid', (req,res) => {
+  const CID = req.params.cid;
+  
+  const url = `SELECT * FROM trainee WHERE cid =${CID}`
+  con.connect(function(err) {
+    if (err) throw err;
+    con.query(url, function (err, result) {
+      if (err) throw err;
+      res.send(result);
+    });
+  });
+  
+})
+
+app.post('/SetTrainee', (req,res) => {
+
+
+
+
+  console.log(req.body)
+
+  const TraineeConstructor = req.body
+  
+  // const url = "INSERT INTO `trainee` (`id`, `cid`, `Name`, `Rating`, `Facility`, `Position`, `Mentor`, `Status`, `RemainingATCHours`, `RemainingDays`, `SoloRemainingDays`) VALUES (NULL,'" + TraineeConstructor.cid + "', '" + TraineeConstructor.Name + "','" +  TraineeConstructor.Rating, '" + '"" TraineeConstructor.Facility + "', '" + TraineeConstructor.Position, '" + TraineeConstructor.Mentor, '" + TraineeConstructor.Status, '" + TraineeConstructor.RemainingATCHours, '" + TraineeConstructor.RemainingDays ,'" + TraineeConstructor.SoloRemainingDays);"
+  
+
+  const url = `INSERT INTO \`trainee\` (\`id\`, \`cid\`, \`Name\`, \`Rating\`, \`Facility\`, \`Position\`, \`Mentor\`, \`Status\`, \`RemainingATCHours\`, \`RatingStart\`, \`SoloStart\` , \`comment\`) VALUES (NULL, '${TraineeConstructor.cid}', '${TraineeConstructor.Name}', '${TraineeConstructor.Rating}', '${TraineeConstructor.Facility}', '${TraineeConstructor.Position}', '${TraineeConstructor.Mentor}', '${TraineeConstructor.Status}', '${TraineeConstructor.RemainingATCHours}', '${TraineeConstructor.RatingStart}', '${TraineeConstructor.SoloStart}' , '${TraineeConstructor.Comment}')`;
+  console.log(url)
+  
+  con.connect(function(err) {
+    if (err) throw err;
+    con.query(url, function (err, result) {
+      if (err) throw err;
+      res.send(result);
+    });
+  });
+  
+})
+
+app.delete('/DeleteTrainee/:id', (req,res) => {
+  const id = req.params.id;
+
+  const query = `DELETE FROM trainee WHERE id = ${id}`;
+
+  con.query(query, (err, result) => {
+    if(err) throw err;
+    
+    res.redirect('http://127.0.0.1:3000/StaffDeleteTrainee'); 
+  })
+  
+})
 
 var server = app.listen(1000, function () {
 
