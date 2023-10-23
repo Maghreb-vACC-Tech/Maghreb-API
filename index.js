@@ -516,26 +516,40 @@ const ratingMap = {
   12: 'ADM',
 };
 
+// app.get('/members', async (req, res) => {
+//   try {
+//     const response = await axios.get('https://api.vatsim.net/v2/orgs/subdivision/MAG', {
+//       headers: {
+//         'X-API-Key': 'd8128629-921e-4c20-9ab1-b4517e8b77d2'
+//       }
+//     });
+//     const people = response.data.items.map(item => ({
+//         id: item.id,
+//         name_first: item.name_first,
+//         name_last: item.name_last,
+//         rating: ratingMap[item.rating.toString()]
+//       }));
+//     res.json(people);
+//   } catch (error) {
+//     console.error(error);
+//     res.status(500).json({ error: 'Internal Server Error' });
+//   }
+// });
+
 app.get('/members', async (req, res) => {
-  try {
-    const response = await axios.get('https://api.vatsim.net/v2/orgs/subdivision/MAG', {
+
+    return fetch('https://api.vatsim.net/v2/orgs/subdivision/MAG', {
       headers: {
         'X-API-Key': 'd8128629-921e-4c20-9ab1-b4517e8b77d2'
       }
-    });
-    const people = response.data.items.map(item => ({
-        id: item.id,
-        name_first: item.name_first,
-        name_last: item.name_last,
-        rating: ratingMap[item.rating.toString()]
-      }));
-    res.json(people);
-  } catch (error) {
-    console.error(error);
-    res.status(500).json({ error: 'Internal Server Error' });
-  }
-});
+    })
+    .then(data =>data.json())
+    .then(data => res.send(data.items))
 
+    // console.error(error);
+    // res.status(500).json({ error: 'Internal Server Error' });
+
+});
 
 
 
@@ -592,13 +606,42 @@ app.get('/GetTraineeid/:id', (req,res) => {
   const ID = req.params.id;
   
   const url = `SELECT * FROM trainee WHERE id =${ID}`
+  try {
   con.connect(function(err) {
+
     if (err) throw err;
     con.query(url, function (err, result) {
-      if (err) throw err;
-      res.send(result);
+      
+        console.log("-------------------------------------------------------")
+        console.log("-------------------------------------------------------")
+        console.log("-------------------------------------------------------")
+        console.log(result[0])
+        res.send(JSON.stringify(result[0]));
+      
+      
     });
+
   });
+  } 
+  catch (error) {
+    console.log(error)
+  }
+})
+//  * 
+// 
+app.get('/GetTraineeStats/:cid', (req,res) => {
+  
+    const CID = req.params.cid;
+    fetch(`https://api.vatsim.net/v2/members/${CID}`)
+    .then( data => data.json())
+    .then( data => {
+      console.log(data)
+      res.send(JSON.stringify(data))
+    })
+    
+   .catch(error =>console.log(error))
+  
+  
   
 })
 // *Get Trainnee with CID
