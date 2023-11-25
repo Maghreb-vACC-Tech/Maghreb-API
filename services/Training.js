@@ -44,10 +44,11 @@ function TraineeGetALL(req,res){
     });}
         
 
-function TraineeGetID(req,res){
-    const ID = req.params.id;
+function TraineeGetCID(req,res){
+    const CID = req.params.cid;
     
-    const url = `SELECT * FROM trainee WHERE id =${ID}`
+    const url = `SELECT * FROM trainee WHERE cid =${CID}`
+
     try {
     con.connect(function(err) {
   
@@ -55,19 +56,16 @@ function TraineeGetID(req,res){
       con.query(url, function (err, result) {
         
           console.log("-------------------------------------------------------")
-          console.log("-------------------------------------------------------")
-          console.log("-------------------------------------------------------")
-          console.log(result[0])
-          res.send(JSON.stringify(result[0]));
-        
+          res.send(result[0]);
         
       });
-  
     });
     } 
     catch (error) {
       console.log(error)
-    }}
+    }
+  
+  }
 
 
 
@@ -77,7 +75,7 @@ function TraineeSet(req,res){
       
     const TraineeConstructor = req.body
         
-    const url = `INSERT INTO \`trainee\` (\`id\`, \`cid\`, \`Name\`, \`Rating\`, \`Facility\`, \`Position\`, \`Mentor\`, \`Status\`, \`RemainingATCHours\`, \`RatingStart\`, \`SoloStart\` , \`comment\`) VALUES (NULL, '${TraineeConstructor.cid}', '${TraineeConstructor.Name}', '${TraineeConstructor.Rating}', '${TraineeConstructor.Facility}', '${TraineeConstructor.Position}', '${TraineeConstructor.Mentor}', '${TraineeConstructor.Status}', '${TraineeConstructor.RemainingATCHours}', '${TraineeConstructor.RatingStart}', '${TraineeConstructor.SoloStart}' , '${TraineeConstructor.Comment}')`;
+    const url = `INSERT INTO \`trainee\` (\`cid\`, \`Name\`, \`Rating\`, \`Facility\`, \`Position\`, \`Mentor\`, \`Status\`, \`comment\`) VALUES ('${TraineeConstructor.cid}', '${TraineeConstructor.Name}', '${TraineeConstructor.Rating}', '${TraineeConstructor.Facility}', '${TraineeConstructor.Position}', '${TraineeConstructor.Mentor}', '${TraineeConstructor.Status}' , '${TraineeConstructor.Comment}')`;
         console.log(url)
         
         con.connect(function(err) {
@@ -89,6 +87,21 @@ function TraineeSet(req,res){
         });
 }
         
+
+
+function TraineeAlter(req , res){
+  const cid = params.cid
+  const query = `UPDATE trainee SET cid = ${TraineeConstructor.cid} , Name = ${TraineeConstructor.cid} ,Rating = ${TraineeConstructor.cid} , Facility = ${TraineeConstructor.cid} , Position = ${TraineeConstructor.cid} , Mentor = ${TraineeConstructor.cid} , Status = ${TraineeConstructor.cid} , comment = ${TraineeConstructor.cid} WHERE cid = ${cid}`
+
+  con.connect(function(err) {
+    if (err) throw err;
+    con.query(query, function (err, result) {
+      if (err) throw err;
+      console.log(result.affectedRows + " record(s) updated");
+      res.redirect('http://localhost:3000/StaffTraining'); 
+    });
+  });
+}
 
 
 function TraineeDelete(req,res){
@@ -107,8 +120,9 @@ module.exports = {
     TraineeGetCid,
     TraineeGetCidStats,
     TraineeGetALL,
-    TraineeGetID,
+    TraineeGetCID,
     TraineeSet,
+    TraineeAlter,
     TraineeDelete
 };
 
