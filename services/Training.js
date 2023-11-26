@@ -90,10 +90,15 @@ function TraineeSet(req,res){
 
 
 function TraineeAlter(req , res){
-  const cid = params.cid
-  const query = `UPDATE trainee SET cid = ${TraineeConstructor.cid} , Name = ${TraineeConstructor.cid} ,Rating = ${TraineeConstructor.cid} , Facility = ${TraineeConstructor.cid} , Position = ${TraineeConstructor.cid} , Mentor = ${TraineeConstructor.cid} , Status = ${TraineeConstructor.cid} , comment = ${TraineeConstructor.cid} WHERE cid = ${cid}`
-
-  con.connect(function(err) {
+  
+  const TraineeConstructor = req.body
+  
+  console.log(TraineeConstructor)
+  
+  const query = `UPDATE trainee SET Rating = '${TraineeConstructor.Rating}' , Facility = '${TraineeConstructor.Facility}' , Position = '${TraineeConstructor.Position}' , Mentor = '${TraineeConstructor.Mentor}' , Status = '${TraineeConstructor.Status}' , comment = '${TraineeConstructor.Comment}' WHERE cid = ${TraineeConstructor.CID}`
+  
+  console.log(query)
+   con.connect(function(err) {
     if (err) throw err;
     con.query(query, function (err, result) {
       if (err) throw err;
@@ -105,10 +110,11 @@ function TraineeAlter(req , res){
 
 
 function TraineeDelete(req,res){
-    const id = req.params.id;
+    const cid = req.params.cid;
   
-    const query = `DELETE FROM trainee WHERE id = ${id}`;
+    const query = `DELETE FROM trainee WHERE cid = ${cid}`;
   
+    console.log(query)
     con.query(query, (err, result) => {
       if(err) throw err;
       

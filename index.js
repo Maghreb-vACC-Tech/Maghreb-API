@@ -66,8 +66,9 @@ app.get('/GetTraineeATC/:cid' , Trainee.TraineeGetCidStats)
 app.get('/GetTrainee', Trainee.TraineeGetALL)
 app.get('/GetTraineecid/:cid', Trainee.TraineeGetCID)
 app.post('/SetTrainee', Trainee.TraineeSet)
-app.put('/AlterTrainee/:cid' , Trainee.TraineeAlter )
-app.delete('/DeleteTrainee/:id', Trainee.TraineeDelete)
+app.put('/AlterTrainee' , Trainee.TraineeAlter )
+
+app.delete('/DeleteTrainee/:cid', Trainee.TraineeDelete)
 
 // Dashboard
 app.post('/stats', Dashboard.Stats)
