@@ -47,7 +47,15 @@ function MaghrebEvent(req, res){
     })
 }
 
+function VatsimEvent(req, res){
+
+  fetch("https://my.vatsim.net/api/v1/events/all")
+  .then(data => data.json())
+  .then( data => res.send(data.data))
+}
+
 
 module.exports = {
-  MaghrebEvent
+  MaghrebEvent,
+  VatsimEvent
 };

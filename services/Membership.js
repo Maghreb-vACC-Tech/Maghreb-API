@@ -20,7 +20,6 @@ async function MembersGet(req, res) {
     .then(data =>data.json())
     .then(data => res.send(data.items))
 
-    // console.err
 }
 
 function MembersGetDB(req, res) {

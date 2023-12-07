@@ -14,6 +14,7 @@ const Booking = require('./services/Booking')
 const Membership = require('./services/Membership')
 const Trainee = require('./services/Training')
 const Dashboard = require('./services/Dashboard')
+const Stats = require('./services/Stats')
 
 var con = mysql.createConnection({
   host: "localhost",
@@ -42,6 +43,7 @@ app.use(cors({origin: '*'}));
 app.get('/AtcActivity', vatsimController.fetchVatsimData);
 
 app.get('/MaghrebEvents', Events.MaghrebEvent);
+app.get('/VatsimEvents', Events.VatsimEvent);
 
 // metarLookup
 app.get('/metarLookup/:airport', Metar.Metar);
@@ -71,9 +73,14 @@ app.put('/AlterTrainee' , Trainee.TraineeAlter )
 app.delete('/DeleteTrainee/:cid', Trainee.TraineeDelete)
 
 // Dashboard
-app.post('/stats', Dashboard.Stats)
-app.post('/LastFlightTime' , Dashboard.LastFlightTime)
-app.post('/ATC' , Dashboard.ATC)
+app.post('/LastFlightPlan' , Dashboard.LastFlightPlan)
+
+// Stats
+app.post('/stats', Stats.Stats)
+app.post('/LastFlightTime' , Stats.LastFlightTime)
+app.post('/ATC' , Stats.ATC)
+app.post('/ATClastposition' , Stats.ATClastposition)
+app.post('/Pilot' , Stats.PILOT)
 // Discord APP
 app.get('/message', (req, res) => {
   fetch('http://localhost:5000/message')

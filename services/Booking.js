@@ -12,11 +12,6 @@ function BookingGetFunction( req , res){
       fetch("https://atc-bookings.vatsim.net/api/booking")
       .then(data => data.json())
       .then(data => {
-        // 
-  
-        // // console.log(data[0].subdivision)
-        // if(data.subdivision?.includes("MAG")){
-        // }
         
         const filteredData = data.filter(item => item.subdivision);
         const BookingArray = []
@@ -57,7 +52,14 @@ function BookingSet(req , res){
       },
       body: JSON.stringify(postData.Data)
       })
-    console.log("done")
+      
+    .then(res => res.json())
+    .then(res => {
+      if( res == postData.Data){
+        console.log("Booking Logged");
+        res.send("Booking Logged")}
+      })
+    
 }
 
   
