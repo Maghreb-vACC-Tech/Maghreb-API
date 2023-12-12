@@ -73,7 +73,7 @@ app.put('/AlterTrainee' , Trainee.TraineeAlter )
 app.delete('/DeleteTrainee/:cid', Trainee.TraineeDelete)
 
 // Dashboard
-app.post('/LastFlightPlan' , Dashboard.LastFlightPlan)
+app.get('/LastFlightPlan/:Name' , Dashboard.LastFlightPlan)
 
 // Stats
 app.post('/stats', Stats.Stats)

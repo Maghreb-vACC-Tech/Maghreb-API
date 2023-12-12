@@ -5,10 +5,10 @@
 
 function LastFlightPlan(req,res){
   
-  const CID = req.body;
-  fetch(`https://api.vatsim.net/v2/members/${CID.cid}/flightplans`)
+  const Name = req.params.Name;
+  fetch(`https://www.simbrief.com/api/xml.fetcher.php?username=${Name}&json=1`)
   .then(data => data.json())
-  .then(data => res.send(data[0]))
+  .then(data => res.send(data))
 }
   module.exports = {
     LastFlightPlan
