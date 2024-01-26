@@ -42,9 +42,10 @@ app.use(cors({origin: '*'}));
 
 app.get('/AtcActivity', vatsimController.fetchVatsimData);
 
+// Maghreb Events
 app.get('/MaghrebEvents', Events.MaghrebEvent);
 app.get('/VatsimEvents', Events.VatsimEvent);
-
+app.get('/GetEventArchive', Events.importEventFromDB);
 // metarLookup
 app.get('/metarLookup/:airport', Metar.Metar);
 
