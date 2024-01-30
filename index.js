@@ -5,6 +5,9 @@ const bodyParser = require('body-parser');
 const mysql = require('mysql2');
 
 
+const dotenv = require("dotenv")
+dotenv.config();
+
 // Import Modules
 const vatsimController = require('./services/ATCActivity');
 const Metar = require('./services/Metar');
@@ -15,6 +18,7 @@ const Membership = require('./services/Membership')
 const Trainee = require('./services/Training')
 const Dashboard = require('./services/Dashboard')
 const Stats = require('./services/Stats')
+const Weather = require('./services/Weather')
 
 var con = mysql.createConnection({
   host: "localhost",
@@ -42,6 +46,10 @@ app.use(cors({origin: '*'}));
 
 app.get('/AtcActivity', vatsimController.fetchVatsimData);
 
+// Weather
+app.get('/GetTAF/:airport' , Weather.GetTAF)
+
+
 // Maghreb Events
 app.get('/MaghrebEvents', Events.MaghrebEvent);
 app.get('/VatsimEvents', Events.VatsimEvent);
@@ -53,10 +61,10 @@ app.get('/metarLookup/:airport', Metar.Metar);
 app.get('/authcode' , Auth2.Auth)
 
 // Booking
-app.get('/MagBookTest' , Booking.BookingTestFunction)
+// app.get('/MagBookTest' , Booking.BookingTestFunction)
 app.get('/MaghrebBooking' , Booking.BookingGetFunction)
 app.post('/AddMaghrebBooking', Booking.BookingSet)
-app.delete('/DeleteMaghrebBooking',Booking.BookingDelete)
+// app.delete('/DeleteMaghrebBooking',Booking.BookingDelete)
 
 // Membership
 app.get('/members', Membership.MembersGet)
@@ -75,7 +83,7 @@ app.delete('/DeleteTrainee/:cid', Trainee.TraineeDelete)
 
 // Dashboard
 app.get('/LastFlightPlan/:Name' , Dashboard.LastFlightPlan)
-
+app.get('/GetWeather/:airport' , Dashboard.GetWeather)
 // Stats
 app.post('/stats', Stats.Stats)
 app.post('/LastFlightTime' , Stats.LastFlightTime)
