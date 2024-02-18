@@ -64,7 +64,7 @@ app.get('/authcode' , Auth2.Auth)
 // app.get('/MagBookTest' , Booking.BookingTestFunction)
 app.get('/MaghrebBooking' , Booking.BookingGetFunction)
 app.post('/AddMaghrebBooking', Booking.BookingSet)
-// app.delete('/DeleteMaghrebBooking',Booking.BookingDelete)
+app.delete('/DeleteMaghrebBooking',Booking.BookingDelete)
 
 // Membership
 app.get('/members', Membership.MembersGet)

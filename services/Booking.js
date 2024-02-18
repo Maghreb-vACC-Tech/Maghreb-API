@@ -1,14 +1,4 @@
-// Booking
 
-
-// function BookingTestFunction(req, res){
-//     fetch("https://atc-bookings.vatsim.net/api/booking")
-//     .then( data => data.json())
-//     .then( data => {
-//       console.log(data)
-//       res.send(data)
-//     })
-// }
 
 function BookingGetFunction( req , res){
       fetch("https://atc-bookings.vatsim.net/api/booking")
@@ -28,7 +18,7 @@ function BookingGetFunction( req , res){
   
         function handleMatch(item) {
           // process matched item
-          console.log("Match:", item);
+          console.log(item);
         }
   
         res.send(BookingArray);
@@ -39,32 +29,35 @@ function BookingGetFunction( req , res){
     }
 
 function BookingSet(req , res ){
-    const url = 'https://atc-bookings.vatsim.net/api/booking'; // Replace with your API endpoint URL
-    // const token = token; x
-
-    // console.log(token)
-    const Data = req.body.Data;
-    console.log(Data.Data)
-    console.log(process.env.BOOKING_TOKEN)
-
-    fetch(url, {
-      method: 'POST',
-      headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${process.env.BOOKING_TOKEN}`
-      },
-      body: JSON.stringify(Data)
-
-      })
-      
-    .then(res => res.json())
-    .then(res => {
-      if( res == Data){
-        console.log("Booking Logged");
-        res.send("Booking Logged")}
-      })
+  const bookingData = req.body.Data;
+  const bookingToken = process.env.BOOKING_TOKEN;
+  // const bookingApiUrl = 'https://booking.api.url';
+  const url = 'https://atc-bookings.vatsim.net/api/booking';
+  fetch(url, {
+    method: 'POST',
+    headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${bookingToken}`
+    },
+    body: JSON.stringify(bookingData)
+  
+    })
     
-    
+  .then(data => data.json())
+  .then(data => {
+    console.log(`${JSON.stringify(data)}`)
+    console.log(`--------------------------------------------`)
+    console.log(`${JSON.stringify(bookingData)}`)
+    if(data === bookingData) {
+      console.log("Booking Logged");
+      res.send("Booking Logged");
+    } 
+    // else {  
+    //   console.log("Error");
+    //   res.send("Error");
+    // }
+    }  
+  )  
 }
 
     
@@ -72,11 +65,9 @@ function BookingDelete(req, res) {
       
       const postData = req.body;
       const url = `https://atc-bookings.vatsim.net/api/booking/${JSON.stringify(postData.id)}`; // Replace with your API endpoint URL
-      // const token = '04c332fb707d9c6e2172c04f92fa33fb'; // Replace with your bearer token
+
     
-    
-      console.log(url);
-    
+      console.log(`Delete ${JSON.stringify(postData)}`)
       
       fetch(url, {
         method: 'DELETE',
@@ -86,12 +77,13 @@ function BookingDelete(req, res) {
         },
         body: JSON.stringify(postData)
         })
+
+        console.log("Delete")
     }
 
 
 
 module.exports = {
-    // BookingTestFunction,
     BookingGetFunction,
     BookingSet,
     BookingDelete
