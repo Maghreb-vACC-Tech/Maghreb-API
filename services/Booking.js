@@ -30,7 +30,7 @@ function BookingGetFunction( req , res){
 
 function BookingSet(req , res ){
   const bookingData = req.body.Data;
-  const bookingToken = process.env.BOOKING_TOKEN;
+  const bookingToken = "04c332fb707d9c6e2172c04f92fa33fb";
   // const bookingApiUrl = 'https://booking.api.url';
   const url = 'https://atc-bookings.vatsim.net/api/booking';
   fetch(url, {
@@ -73,7 +73,7 @@ function BookingDelete(req, res) {
         method: 'DELETE',
         headers: {
             'Content-Type': 'application/json',
-            'Authorization': `Bearer ${process.env.BOOKING_TOKEN}`
+            'Authorization': `Bearer 04c332fb707d9c6e2172c04f92fa33fb`
         },
         body: JSON.stringify(postData)
         })
