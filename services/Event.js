@@ -21,7 +21,7 @@ function FilterEventFromAirport(RawEventResponse){
 
 function SaveEventsinDB(FilteredeventResponse){
   
-  const sql = "INSERT INTO MagEvents (id, name, link, organisers, banner ,description) VALUES (?, ?, ?, ?, ?, ?)";
+  const sql = "INSERT INTO magevents (id, name, link, organisers, banner ,description) VALUES (?, ?, ?, ?, ?, ?)";
   
   con.connect(function(err) {
 
@@ -53,7 +53,7 @@ function SaveEventsinDB(FilteredeventResponse){
   
 }
 function ClearDbBeforeArchive(){
-  const sql = "DELETE FROM MagEvents";
+  const sql = "DELETE FROM magevents";
   
   con.connect(function(err) {
 
@@ -115,7 +115,7 @@ function VatsimEvent(req, res){
 
 function importEventFromDB(req , res){
     
-  const sql = "SELECT * FROM MagEvents";
+  const sql = "SELECT * FROM magevents";
   
   con.connect(function(err) {
 
