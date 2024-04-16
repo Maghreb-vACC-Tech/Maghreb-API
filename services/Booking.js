@@ -50,12 +50,12 @@ function BookingSet(req , res ){
     console.log(`${JSON.stringify(bookingData)}`)
     if(data === bookingData) {
       console.log("Booking Logged");
-      res.send("Booking Logged");
+      res.send(data);
     } 
-    // else {  
-    //   console.log("Error");
-    //   res.send("Error");
-    // }
+    else {  
+      console.log("Booking Logging Error");
+      res.send(data);
+    }
     }  
   )  
 }

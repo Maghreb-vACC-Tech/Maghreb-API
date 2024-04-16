@@ -1,0 +1,54 @@
+{
+  "airports": {
+    "GMMN": {
+      "runways": [
+        {
+          "name": "35R",
+          "length": "12195",
+          "info": "RWY 35 RIGHT IN USE. TRANSITION LEVEL FIVE ZERO. RISK OF CONFUSION BETWEEN RWY 35 RIGHT AND RWY 35 LEFT. RISK OF CONFUSION BETWEEN 35R AND TAXIWAY TANGO. AFTER VACATING 35R HOLD SHORT OF PARALLEL TAXIWAY TANGO.",
+          "heading": "345"
+        },
+        {
+          "name": "35L",
+          "length": "12175",
+          "info": "RWY 35 LEFT IN USE. TRANSITION LEVEL FIVE ZERO. RISK OF CONFUSION BETWEEN RWY 35 RIGHT AND RWY 35 LEFT.",
+          "heading": "345"
+        },
+        {
+          "name": "17R",
+          "length": "12195",
+          "info": "RWY 17 RIGHT IN USE. TRANSITION LEVEL FIVE ZERO. RISK OF CONFUSION BETWEEN RWY 17 RIGHT AND RWY 17 LEFT.",
+          "heading": "176"
+        },
+        {
+          "name": "17L",
+          "length": "12175",
+          "info": "RWY 17 LEFT IN USE. TRANSITION LEVEL FIVE ZERO. RISK OF CONFUSION BETWEEN RWY 17 LEFT AND RWY 17 RIGHT. RISK OF CONFUSION BETWEEN 17L AND TAXIWAY TANGO. AFTER VACATING 17L HOLD SHORT OF PARALLEL TAXIWAY TANGO.",
+          "heading": "176"
+        }
+      ]
+    },
+    "GMMX": {
+      "runways": [
+        {
+          "name": "10",
+          "info": "EXPECT ILS 10. TRANSITION LEVEL 70. FOR ALL SID AND STAR WHEN FILLING FLIGHT PLAN, DISREGARD ABBREVIATED ROUTE NAME AND USE THE FULL ROUTE NAME."
+        },
+        {
+          "name": "28",
+          "info": "RWY 28 IN USE. TRANSITION LEVEL SEVEN ZERO. FOR ALL SID AND STAR WHEN FILLING FLIGHT PLAN, DISREGARD ABBREVIATED ROUTE NAME AND USE THE FULL ROUTE NAME."
+        }
+      ]
+    },
+    "GMAD": {
+      "runways": [
+        {
+          "name": "35R",
+          "length": "12195",
+          "info": "RWY 35 RIGHT IN USE. TRANSITION LEVEL FIVE ZERO. RISK OF CONFUSION BETWEEN RWY 35 RIGHT AND RWY 35 LEFT. RISK OF CONFUSION BETWEEN 35R AND TAXIWAY TANGO. AFTER VACATING 35R HOLD SHORT OF PARALLEL TAXIWAY TANGO.",
+          "heading": "345"
+        }
+      ]
+    }
+  }
+}

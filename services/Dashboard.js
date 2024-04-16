@@ -24,7 +24,20 @@ function LastFlightPlan(req,res){
   })
   
 }
+
+function LastAnnouncement(req,res){
+  fetch(`http://54.36.162.223:5000/message`)
+  .then(data => data.json())
+  // .then(data => console.log(data))
+  .then(data => res.send(data))
+  .catch((err)=>{
+    console.log(err)
+    data.send("Error Check API Logs")
+  })
+  
+}
   module.exports = {
     LastFlightPlan,
-    GetWeather
+    GetWeather,
+    LastAnnouncement
 };

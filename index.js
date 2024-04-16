@@ -1,7 +1,6 @@
 const express = require('express')
 const cors = require('cors');
 const bodyParser = require('body-parser');
-// const axios = require('axios');
 const mysql = require('mysql2');
 
 
@@ -19,6 +18,9 @@ const Trainee = require('./services/Training')
 const Dashboard = require('./services/Dashboard')
 const Stats = require('./services/Stats')
 const Weather = require('./services/Weather')
+const AviationGov = require('./services/AviationGov')
+const Notams = require('./services/Notams')
+const ARPInfo = require('./services/AirportInfo/AirportInfo')
 
 var con = mysql.createConnection({
   host: "localhost",
@@ -26,9 +28,6 @@ var con = mysql.createConnection({
   password: "",
   database: "maghreb"
 });
-
-
-
 
 var app = express();
 
@@ -43,6 +42,13 @@ app.use(cors({origin: '*'}));
 // This responds with "Hello World" on the homepage
 
 // This responds a POST request for the homepage
+// Notam
+app.get('/Notams/:airport' , Notams.GetNotam)
+
+
+// AiportInformation
+app.get('/GetARPInfo/:airport' , ARPInfo.getAirportInfo)
+
 
 app.get('/AtcActivity', vatsimController.fetchVatsimData);
 
@@ -54,6 +60,7 @@ app.get('/GetTAF/:airport' , Weather.GetTAF)
 app.get('/MaghrebEvents', Events.MaghrebEvent);
 app.get('/VatsimEvents', Events.VatsimEvent);
 app.get('/GetEventArchive', Events.importEventFromDB);
+
 // metarLookup
 app.get('/metarLookup/:airport', Metar.Metar);
 
@@ -61,7 +68,6 @@ app.get('/metarLookup/:airport', Metar.Metar);
 app.get('/authcode' , Auth2.Auth)
 
 // Booking
-// app.get('/MagBookTest' , Booking.BookingTestFunction)
 app.get('/MaghrebBooking' , Booking.BookingGetFunction)
 app.post('/AddMaghrebBooking', Booking.BookingSet)
 app.delete('/DeleteMaghrebBooking',Booking.BookingDelete)
@@ -84,12 +90,19 @@ app.delete('/DeleteTrainee/:cid', Trainee.TraineeDelete)
 // Dashboard
 app.get('/LastFlightPlan/:Name' , Dashboard.LastFlightPlan)
 app.get('/GetWeather/:airport' , Dashboard.GetWeather)
+app.get('/GetLastAnnouncement' , Dashboard.LastAnnouncement)
 // Stats
 app.post('/stats', Stats.Stats)
 app.post('/LastFlightTime' , Stats.LastFlightTime)
 app.post('/ATC' , Stats.ATC)
 app.post('/ATClastposition' , Stats.ATClastposition)
 app.post('/Pilot' , Stats.PILOT)
+
+// Aviation.gov
+app.get('/AGMetar/:airport' , AviationGov.GetMetar)
+app.get('/AGTAF/:airport' , AviationGov.GetTAF)
+
+
 // Discord APP
 app.get('/message', (req, res) => {
   fetch('http://localhost:5000/message')
@@ -124,7 +137,10 @@ app.get('/LookupCid/:cid', function (req, res) {
 
 
 
-var server = app.listen(1000, function () {
+
+
+
+  var server = app.listen(1000, function () {
 
    var host = server.address().address
    var port = server.address().port
