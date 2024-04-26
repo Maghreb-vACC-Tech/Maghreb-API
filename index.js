@@ -21,6 +21,7 @@ const Weather = require('./services/Weather')
 const AviationGov = require('./services/AviationGov')
 const Notams = require('./services/Notams')
 const ARPInfo = require('./services/AirportInfo/AirportInfo')
+const Settings = require('./services/Settings')
 
 var con = mysql.createConnection({
   host: "localhost",
@@ -101,6 +102,12 @@ app.post('/Pilot' , Stats.PILOT)
 // Aviation.gov
 app.get('/AGMetar/:airport' , AviationGov.GetMetar)
 app.get('/AGTAF/:airport' , AviationGov.GetTAF)
+
+
+// Settings
+app.get('/Setting/:CID' , Settings.GetSettingCID)
+
+app.post('/SetSettings' , Settings.SetSettingCID)
 
 
 // Discord APP

@@ -1,6 +1,16 @@
 {
   "airports": {
     "GMMN": {
+      "TA" : 4000,
+      "Frequencies" :{
+        "ATIS" : 126.3,
+        "GND" : 130.6,
+        "TWR" : 118.5,
+        "APP" : 119.9,
+        "CTR_ALL" : 131.925,
+        "GMAC" : 131.925
+      },
+      "InitialClimb" : 50,
       "runways": [
         {
           "name": "35R",
@@ -29,6 +39,16 @@
       ]
     },
     "GMMX": {
+      "TA" : 6000,
+      "Frequencies" :{
+        "ATIS" : 121.95,
+        "GND" : 130.6,
+        "TWR" : 118.7,
+        "APP" : 119.7,
+        "CTR_ALL" : 131.925,
+        "GMAC" : 131.925
+      },
+      "InitialClimb" : 80,
       "runways": [
         {
           "name": "10",
@@ -41,12 +61,190 @@
       ]
     },
     "GMAD": {
+      "TA" : 5000,
+      "InitialClimb" : 160,
+      "Frequencies" :{
+        "ATIS" : 127.75,
+        "GND" : 130.6,
+        "TWR" : 119.5,
+        "APP" : 120.9,
+        "CTR_ALL" : 131.925,
+        "GMAC" : 131.925
+      },
       "runways": [
         {
-          "name": "35R",
-          "length": "12195",
-          "info": "RWY 35 RIGHT IN USE. TRANSITION LEVEL FIVE ZERO. RISK OF CONFUSION BETWEEN RWY 35 RIGHT AND RWY 35 LEFT. RISK OF CONFUSION BETWEEN 35R AND TAXIWAY TANGO. AFTER VACATING 35R HOLD SHORT OF PARALLEL TAXIWAY TANGO.",
-          "heading": "345"
+          "name": "27",
+          "info": "RWY 27 IN USE. TRANSITION LEVEL SIX ZERO.BIRDS CONCENTRATION AT THE EDGE OF RUNWAY AND TAXIWAYS. CAUTION RECOMMENDED.",
+          "heading": "274"
+        },
+        {
+          "name": "09",
+          "info": "RWY 09 IN USE. TRANSITION LEVEL SIX ZERO. BIRDS CONCENTRATION AT THE EDGE OF RUNWAY AND TAXIWAYS. CAUTION RECOMMENDED.",
+          "heading": "096"
+        }
+      ]
+    },
+    
+
+
+    "DAAG": {
+      "TA" : 3940,
+      "InitialClimb" : 160,
+      "Frequencies" :{
+        "ATIS" : 128.525,
+        "GND" : 121.8,
+        "TWR" : 118.7,
+        "APP" : 121.4,
+        "CTR_ALL" : 131.925
+      },
+      "runways": [
+        {
+          "name": "09",
+          "info": "RWY 09 IN USE. SHALL BE USED FOR ARRIVALS UNLESS DEMAND REQUIRES IT.",
+          "heading": "274"
+        },
+        {
+          "name": "27",
+          "info": "RWY 27 IN USE. SHALL BE USED FOR DEPARTURES UNLESS DEMAND REQUIRES IT.",
+          "heading": "274"
+        },
+        {
+          "name": "05",
+          "info": "RWY 05 IN USE. SHALL BE USED FOR DEPARTURES UNLESS DEMAND REQUIRES IT.",
+          "heading": "274"
+        },
+        {
+          "name": "23",
+          "info": "RWY 23 IN USE. SHALL BE USED FOR ARRIVALS UNLESS DEMAND REQUIRES IT.",
+          "heading": "096"
+        }
+      ]
+    },
+    "DAUH": {
+      "TA" : 3450,
+      "InitialClimb" : 160,
+      "Frequencies" :{
+        "ATIS" : 128.525,
+        "GND" : "No Freq",
+        "TWR" : 118.1,
+        "APP" : 120.0,
+        "CTR_ALL" : "NoFreq"
+      },
+      "runways": [
+        {
+          "name": "18",
+          "info": "RWY 18 IN USE. TRANSITION LEVEL SIX ZERO.BIRDS CONCENTRATION AT THE EDGE OF RUNWAY AND TAXIWAYS. CAUTION RECOMMENDED.",
+          "heading": "274"
+        },
+        {
+          "name": "36",
+          "info": "RWY 27 IN USE. TRANSITION LEVEL SIX ZERO.BIRDS CONCENTRATION AT THE EDGE OF RUNWAY AND TAXIWAYS. CAUTION RECOMMENDED.",
+          "heading": "274"
+        }
+      ]
+    },
+    "DAOO": {
+      "TA" : 3250,
+      "InitialClimb" : 160,
+      "Frequencies" :{
+        "ATIS" : 128.525,
+        "GND" : "No Freq",
+        "TWR" : 118.1,
+        "APP" : 128.2,
+        "CTR_ALL" : "NoFreq"
+      },
+      "runways": [
+        {
+          "name": "07L",
+          "info": "RWY 07L IN USE. TRANSITION LEVEL SIX ZERO.BIRDS CONCENTRATION AT THE EDGE OF RUNWAY AND TAXIWAYS. CAUTION RECOMMENDED.",
+          "heading": "274"
+        },
+        {
+          "name": "07R",
+          "info": "RWY 07R IN USE. TRANSITION LEVEL SIX ZERO.BIRDS CONCENTRATION AT THE EDGE OF RUNWAY AND TAXIWAYS. CAUTION RECOMMENDED.",
+          "heading": "274"
+        },
+        {
+          "name": "25L",
+          "info": "RWY 25L IN USE. TRANSITION LEVEL SIX ZERO.BIRDS CONCENTRATION AT THE EDGE OF RUNWAY AND TAXIWAYS. CAUTION RECOMMENDED.",
+          "heading": "274"
+        },
+        {
+          "name": "25R",
+          "info": "RWY 25R IN USE. TRANSITION LEVEL SIX ZERO.BIRDS CONCENTRATION AT THE EDGE OF RUNWAY AND TAXIWAYS. CAUTION RECOMMENDED.",
+          "heading": "274"
+        }
+      ]
+    },
+    
+
+
+    "DTTA": {
+      "TA" : 6000,
+      "InitialClimb" : 160,
+      "Frequencies" :{
+        "ATIS" : 118.675,
+        "GND" : 121.6,
+        "TWR" : 118.1,
+        "APP" : 121.2,
+        "CTR_ALL" : "NoFreq"
+      },
+      "runways": [
+        {
+          "name": "19",
+          "info": "[Wrong data]DEP 11 ARR 19. ARR RWY 19. TRANSITION LEVEL SEVEN ZERO. DEPARTURE RUNWAY 11.",
+          "heading": "274"
+        },
+        {
+          "name": "10",
+          "info": "[Wrong data]RWY 09 IN USE. TRANSITION LEVEL SIX ZERO. BIRDS CONCENTRATION AT THE EDGE OF RUNWAY AND TAXIWAYS. CAUTION RECOMMENDED.",
+          "heading": "096"
+        }
+      ]
+    },
+    "DTTJ": {
+      "TA" : 6000,
+      "InitialClimb" : 120,
+      "Frequencies" :{
+        "ATIS" : 124.525,
+        "GND" : "NoFreq",
+        "TWR" : 118.15,
+        "APP" : 120.3,
+        "CTR_ALL" : 131.925
+      },
+      "runways": [
+        {
+          "name": "19",
+          "info": "[Wrong data]DEP 11 ARR 19. ARR RWY 19. TRANSITION LEVEL SEVEN ZERO. DEPARTURE RUNWAY 11.",
+          "heading": "274"
+        },
+        {
+          "name": "10",
+          "info": "[Wrong data]RWY 09 IN USE. TRANSITION LEVEL SIX ZERO. BIRDS CONCENTRATION AT THE EDGE OF RUNWAY AND TAXIWAYS. CAUTION RECOMMENDED.",
+          "heading": "096"
+        }
+      ]
+    },
+    "DTNH": {
+      "TA" : 6000,
+      "InitialClimb" : 120,
+      "Frequencies" :{
+        "ATIS" : 136.3,
+        "GND" : 130.6,
+        "TWR" : 118.5,
+        "APP" : 119.9,
+        "CTR_ALL" : "NoFreq"
+      },
+      "runways": [
+        {
+          "name": "09",
+          "info": "EXPECT ILS APPROACH RUNWAY IN USE 09. TRANSITION LEVEL SEVEN ZERO. DEPARTURE RUNWAY 09.",
+          "heading": "274"
+        },
+        {
+          "name": "27",
+          "info": "EXPECT ILS APPROACH RUNWAY IN USE 27. TRANSITION LEVEL SEVEN ZERO. DEPARTURE RUNWAY 27.",
+          "heading": "096"
         }
       ]
     }
