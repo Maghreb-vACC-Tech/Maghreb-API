@@ -1,5 +1,5 @@
 // *Training Involves my SQL
-
+/*
 const mysql = require('mysql2')
 var con = mysql.createConnection({
     host: "localhost",
@@ -132,3 +132,4 @@ module.exports = {
     TraineeDelete
 };
 
+*/

@@ -1,13 +1,13 @@
 
-const mysql = require('mysql2')
-
+//const mysql = require('mysql2')
+/*
 var con = mysql.createConnection({
     host: "localhost",
     user: "root",
     password: "",
     database: "maghreb"
   });
-  
+  */
 
 
 async function MembersGet(req, res) {
@@ -21,7 +21,7 @@ async function MembersGet(req, res) {
     .then(data => res.send(data.items))
 
 }
-
+/*
 function MembersGetDB(req, res) {
     
     
@@ -49,9 +49,9 @@ function MembersGetDB(req, res) {
 
   // console.err
 }
+*/
 
-
-
+/*
 function MembershipDBRefresh(req, res){
     fetch("http://127.0.0.1:1000/members")
     .then(response => response.json())
@@ -95,7 +95,7 @@ function MembershipDBRefresh(req, res){
       res.send("Membership Db is refreshed")
     })
 }
-
+*/
 function MemberHistory(req, res){
   const id = req.params.id; 
   console.log(id)
@@ -111,5 +111,8 @@ function MemberHistory(req, res){
 } 
 
 module.exports = {
-    MembersGet,MembershipDBRefresh,MembersGetDB,MemberHistory
+    //MembersGet,
+    //MembershipDBRefresh,
+    //MembersGetDB,
+    MemberHistory
 };

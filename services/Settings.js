@@ -1,4 +1,4 @@
-
+/*
 const mysql = require('mysql2')
 var con = mysql.createConnection({
     host: "localhost",
@@ -43,3 +43,4 @@ function SetSettingCID(req , res ){
 
 module.exports = {GetSettingCID , SetSettingCID};
 
+*/

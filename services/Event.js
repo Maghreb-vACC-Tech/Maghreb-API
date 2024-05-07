@@ -1,12 +1,13 @@
-const mysql = require('mysql2')
+//const mysql = require('mysql2')
 
+/*
 var con = mysql.createConnection({
     host: "localhost",
     user: "root",
     password: "",
     database: "maghreb"
   });
-
+*/
 //! //////////////////////////////////// Maghreb Event //////////////////
 
 function FilterEventFromAirport(RawEventResponse){
@@ -18,7 +19,7 @@ function FilterEventFromAirport(RawEventResponse){
   })
 
 }
-
+/*
 function SaveEventsinDB(FilteredeventResponse){
   
   const sql = "INSERT INTO magevents (id, name, link, organisers, banner ,description) VALUES (?, ?, ?, ?, ?, ?)";
@@ -70,7 +71,7 @@ function ClearDbBeforeArchive(){
  
 
     });
-}
+}*/
 
 function MaghrebEvent(req, res){
 
@@ -87,8 +88,8 @@ function MaghrebEvent(req, res){
   .then( data => {
     const RawEventResponse = data.data;//* store Raw data for use
     const FilteredeventResponse = FilterEventFromAirport(RawEventResponse) //* Filter
-    ClearDbBeforeArchive()
-    SaveEventsinDB(FilteredeventResponse) //* Archive
+    // ClearDbBeforeArchive()
+    // SaveEventsinDB(FilteredeventResponse) //* Archive
     res.send(FilteredeventResponse); //* Send
   })
 
@@ -112,7 +113,7 @@ function VatsimEvent(req, res){
 
 }
 //! /////////////////////////////////// Vatsim Event END ///////////////////
-
+/*
 function importEventFromDB(req , res){
     
   const sql = "SELECT * FROM magevents";
@@ -138,9 +139,9 @@ function importEventFromDB(req , res){
 
     
 }
-
+*/
 module.exports = {
   MaghrebEvent,
-  VatsimEvent,
-  importEventFromDB
+  VatsimEvent
+//  importEventFromDB
 };
