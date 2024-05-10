@@ -3,7 +3,7 @@ const cors = require('cors');
 const bodyParser = require('body-parser');
 //const mysql = require('mysql2');
 
-const DevEnvProduction = false
+const DevEnvProduction = true
 
 //SSL
 const https = require('https');
@@ -52,17 +52,18 @@ const db = new sqlite3.Database(dbPath, (err) => {
 
 
 let sql = `
-CREATE TABLE members (
-  CID int(11) NOT NULL,
-  Name varchar(255) NOT NULL,
-  Email varchar(255) NOT NULL,
-  Location varchar(255) NOT NULL,
-  Rating varchar(255) NOT NULL,
-  lastratingchange varchar(255) NOT NULL,
-  Approved varchar(255) NOT NULL,
-  Privileges varchar(255) NOT NULL
-)
+  CREATE TABLE members (
+    CID int(11) NOT NULL,
+    Name varchar(255) NOT NULL,
+    Email varchar(255) NOT NULL,
+    Location varchar(255) NOT NULL,
+    Rating varchar(255) NOT NULL,
+    lastratingchange varchar(255) NOT NULL,
+    Approved varchar(255) NOT NULL,
+    Privileges varchar(255) NOT NULL
+  )
 `;
+
 
 db.all(sql, [], (err, rows) => {
   if (err) {
@@ -89,13 +90,13 @@ app.use(cors({origin: '*'}));
 // This responds with "Hello World" on the homepage
 
 
-if(DevEnvProduction){
+// if(DevEnvProduction){
   const options = {
     key: fs.readFileSync('/etc/letsencrypt/live/api.vatsim.ma/privkey.pem'),
     cert: fs.readFileSync('/etc/letsencrypt/live/api.vatsim.ma/fullchain.pem'),
   };
 
-}
+// }
 
 
 // This responds a POST request for the homepage
@@ -133,6 +134,7 @@ app.get('/members', Membership.MembersGet)
 app.get('/MembershipDBRefresh' , Membership.MembershipDBRefresh)
 app.get('/MembersGetDB' , Membership.MembersGetDB)
 app.get('/MembersGetConnectionLog/:id' ,Membership.MemberHistory )
+
 // Trainee
 /*app.get('/GetTrainee/:cid', Trainee.TraineeGetCid)
 app.get('/GetTraineeATC/:cid' , Trainee.TraineeGetCidStats)
@@ -203,9 +205,6 @@ app.get('/LookupCid/:cid', function (req, res) {
 */
 
 /*
-
-*/
-
 try {
   const server = https.createServer(options, app);
 
@@ -221,6 +220,13 @@ try {
     console.log("Example app listening at http://127.0.0.1:1000/ ")
  })
 }
+
+*/
+const server = https.createServer(options, app);
+
+  server.listen(443, () => {
+    console.log('Server running on port 443');
+  });
 
 
 // var server = app.listen(1000, function () {

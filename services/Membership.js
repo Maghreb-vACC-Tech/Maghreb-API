@@ -14,13 +14,20 @@ let db = new sqlite3.Database('maghreb.db');
 
 
 
-// const query = `INSERT INTO members (CID, Name, Email, Location, Rating, lastratingchange, Approved, Privileges) VALUES (${member.id}, '${member.name_first} ${member.name_last}', '${member.email}', '${member.countystate}(${member.country})', '${ratingMap[member.rating]}', '${member.lastratingchange}', '', '')`;
-
 
 
 
 function MembershipDBRefresh(req, res){
-  fetch("http://127.0.0.1:1000/members")
+  
+  db.all(`Delete from members`, [], (err, rows) => {
+    if (err) {
+      console.log(err);
+    }
+    
+  });
+
+  
+  fetch("https://api.vatsim.ma/members")
   .then(response => response.json())
   .then(response => {
     response.forEach(member => {
@@ -43,12 +50,6 @@ function MembershipDBRefresh(req, res){
 
       
 
-    db.all(`Delete from members`, [], (err, rows) => {
-      if (err) {
-        console.log(err);
-      }
-      
-    });
 
     let sql = `
     INSERT INTO members 
@@ -71,34 +72,6 @@ function MembershipDBRefresh(req, res){
   })
 }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 async function MembersGet(req, res) {
     
     return fetch('https://api.vatsim.net/v2/orgs/subdivision/MAG?limit=1000', {
@@ -111,10 +84,7 @@ async function MembersGet(req, res) {
 
 }
 
-
 function MembersGetDB(req, res) {
-    
-
 
   sql = `
   SELECT * FROM members;
@@ -123,48 +93,21 @@ function MembersGetDB(req, res) {
   db.all(sql, [], (err, rows) => {
     if (err) {
       console.log(err);
+      res.status(500).send("An error occurred");
+      return;
     }
-    // console.log('Membership Table created successfully!');
-    rows.forEach((row) => {
-      console.log("-------------------------------------------------------")
-      console.log("-------------------------------------------------------")
-      console.log("-------------------------------------------------------")
-      console.log(result)
-      res.send(result);
-    });
-  });
 
-
-
-
+    const data = rows.map(row => row); // Collect all rows in an array
     
-  // const url = `SELECT * FROM members`
-  // try {
-  // con.connect(function(err) {
-
-  //   if (err) throw err;
-  //   con.query(url, function (err, result) {
-      
-  //       console.log("-------------------------------------------------------")
-  //       console.log("-------------------------------------------------------")
-  //       console.log("-------------------------------------------------------")
-  //       console.log(result)
-  //       res.send(result);
-      
-      
-  //   });
-
-  // });
-  // } 
-  // catch (error) {
-  //   console.log(error)
-  // }
-
-  // console.err
+    console.log("-------------------------------------------------------")
+    console.log("-------------------------------------------------------")
+    console.log("-------------------------------------------------------")
+    console.log(data)
+    
+    res.send(data); // Send the entire array as the response
+  });
+  
 }
-
-
-
 
 function MemberHistory(req, res){
   const id = req.params.id; 
