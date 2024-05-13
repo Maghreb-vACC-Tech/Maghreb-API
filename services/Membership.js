@@ -1,4 +1,4 @@
-
+const Data = require("../MaghrebSetup.json")
 const sqlite3 = require('sqlite3').verbose();
 //const mysql = require('mysql2')
 /*
@@ -27,7 +27,7 @@ function MembershipDBRefresh(req, res){
   });
 
   
-  fetch("https://api.vatsim.ma/members")
+  fetch((Data.dev) ? "http://localhost:1000/members" : "https://api.vatsim.ma/members")
   .then(response => response.json())
   .then(response => {
     response.forEach(member => {

@@ -29,17 +29,20 @@ function LastFlightTime (req , res){
     };
   
     const CID = req.body;
+    console.log(CID)
+    // fetch(`https://api.vatsim.net/v2/members/${CID.cid}/history`)
     fetch(`https://api.vatsim.net/v2/members/${CID.cid}/history`)
       .then(data => data.json())
       .then(data => 
         {
-          
+        console.table(data)
         response.start = data.items[0].start;  
         response.end = data.items[0].end;
   
         res.json(response)
   
         })
+      .catch(e => console.log(`Error In stats page Function LastFlightTime  : \n ${e}`))
   }
 
 function ATC (req , res){
