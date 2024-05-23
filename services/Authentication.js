@@ -71,10 +71,10 @@ function Auth(req, res){
     let Data = JSON.stringify(userData);
     const encodedData = encodeURIComponent(JSON.stringify(Data));
     if(Data.dev){
-      res.redirect(`http://api.vatsim.ma:3000/extractor?data=${encodedData}`);
+      res.redirect(`http://localhost:3000/extractor?data=${encodedData}`);
     }
     else{
-      res.redirect(`http://localhost:3000/extractor?data=${encodedData}`);
+      res.redirect(`http://api.vatsim.ma:3000/extractor?data=${encodedData}`);
     }
   })
   .catch(error => {

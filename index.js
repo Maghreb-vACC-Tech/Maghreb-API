@@ -84,14 +84,11 @@ app.use(bodyParser.json());
 app.use(cors());
 app.use(cors({origin: '*'}));
 // This responds with "Hello World" on the homepage
+let options = {};
 
+if(!Data.dev){
 
-if(Data.dev){
-
-
-}
-else{  
-  const options = {
+  options = {
     key: fs.readFileSync('/etc/letsencrypt/live/api.vatsim.ma/privkey.pem'),
     cert: fs.readFileSync('/etc/letsencrypt/live/api.vatsim.ma/fullchain.pem'),
   };
