@@ -21,7 +21,7 @@ function MembershipDBRefresh(req, res){
   
   db.all(`Delete from members`, [], (err, rows) => {
     if (err) {
-      console.log(err);
+      console.log(`Handled Error : ${err}`);
     }
     
   });
@@ -59,7 +59,7 @@ function MembershipDBRefresh(req, res){
 
     db.all(sql, [], (err, rows) => {
       if (err) {
-        console.log(err);
+        console.log(`Handled Error : ${err}`);
       }
       
     });
@@ -92,17 +92,17 @@ function MembersGetDB(req, res) {
 
   db.all(sql, [], (err, rows) => {
     if (err) {
-      console.log(err);
+      console.log(`Handled Error : ${err}`);
       res.status(500).send("An error occurred");
       return;
     }
 
     const data = rows.map(row => row); // Collect all rows in an array
     
-    console.log("-------------------------------------------------------")
-    console.log("-------------------------------------------------------")
-    console.log("-------------------------------------------------------")
-    console.log(data)
+    // console.log("-------------------------------------------------------")
+    // console.log("-------------------------------------------------------")
+    // console.log("-------------------------------------------------------")
+    // console.log(data)
     
     res.send(data); // Send the entire array as the response
   });
@@ -111,13 +111,13 @@ function MembersGetDB(req, res) {
 
 function MemberHistory(req, res){
   const id = req.params.id; 
-  console.log(id)
+  // console.log(id)
   fetch(`https://api.vatsim.net/v2/members/${id}/atc`)
   .then(data => data.json())
   .then(data => 
     {
       console.log("----------------------------- MEMBER LOGS -----------")
-      console.log(data)
+      // console.log(data)
       res.send(data.items)
     })
 

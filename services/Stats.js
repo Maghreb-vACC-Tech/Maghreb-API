@@ -15,8 +15,8 @@ function Stats (req , res){
   
         res.json(response);
       })
-      .catch(error => {
-        console.error("Error:", error);
+      .catch(err => {
+        console.error(`Handled Error : ${err}`);
         res.status(500).json(response);
       });}
 
@@ -29,7 +29,7 @@ function LastFlightTime (req , res){
     };
   
     const CID = req.body;
-    console.log(CID)
+    // console.log(CID)
     // fetch(`https://api.vatsim.net/v2/members/${CID.cid}/history`)
     fetch(`https://api.vatsim.net/v2/members/${CID.cid}/history`)
       .then(data => data.json())

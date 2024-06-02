@@ -5,7 +5,7 @@ function GetWeather(req,res){
   .then(data => data.json())
   .then(data => res.send(data[0]))
   .catch(err => {
-    console.log(err)
+    console.log(`Handled Error : ${err}`)
     res.send("Error Check API Logs")
   })
 }
@@ -19,7 +19,7 @@ function LastFlightPlan(req,res){
   .then(data => data.json())
   .then(data => res.send(data))
   .catch((err)=>{
-    console.log(err)
+    console.log(`Handled Error : ${err}`)
     res.send("Error Check API Logs")
   })
   
@@ -31,7 +31,7 @@ function LastAnnouncement(req,res){
   // .then(data => console.log(data))
   .then(data => res.send(data))
   .catch((err)=>{
-    console.log(err)
+    console.log(`Handled Error : ${err}`)
     data.send("Error Check API Logs")
   })
   

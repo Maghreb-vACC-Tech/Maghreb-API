@@ -45,7 +45,7 @@ function fetchVatsimData(req, res) {
             }
           })
           .catch(error => {
-            console.error(error);
+            console.error(`HandledError : ${error}`);
           });
       } catch (error) {
           setInterval(() => {

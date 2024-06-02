@@ -5,7 +5,7 @@ function GetTAF(req , res){
     .then( data => data.text())
     .then( data => res.send(data))
     .catch(err => {
-        console.log(err)
+        console.log(`Handled Error : ${err}`)
         res.send("Error Check API Logs")
       })
 }

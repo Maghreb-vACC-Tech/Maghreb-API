@@ -2,7 +2,7 @@ function GetMetar(req,res){
   
     const Name = req.params.airport;
 
-    console.log(Name)
+    // console.log(Name)
     fetch(`https://aviationweather.gov/api/data/metar/?ids=${Name}&format=json`)
     .then(data => data.json())
     .then(data => res.send(data))
@@ -22,8 +22,8 @@ function GetTAF(req,res){
     .then(data => data.json())
     .then(data => res.send(data[0]))
     .catch((err)=>{
-        console.log(err)
-        res.send("Error Check API Logs")
+        console.log(`Handled Error : ${err}`)
+        res.send("Error Happened Check Logs")
     })
 
 }

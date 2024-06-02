@@ -12,9 +12,9 @@ async function Metar (req, res) {
     let data;
     try {
       data = await response.json();
-    } catch (e) {
+    } catch (err) {
       // Handle JSON parsing errors here
-      console.log('Error: could not parse JSON response:', e.message);
+      console.log(`Handled Error : ${err}`);
       return;
     }
 
@@ -51,9 +51,9 @@ async function TAF (req, res) {
   let data;
   try {
     data = await response.json();
-  } catch (e) {
+  } catch (err) {
     // Handle JSON parsing errors here
-    console.log('Error: could not parse JSON response:', e.message);
+    console.log(`Handled Error : ${err}`);
     return;
   }
 

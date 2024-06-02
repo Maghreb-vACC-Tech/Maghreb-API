@@ -3,16 +3,17 @@ const Data = require("../MaghrebSetup.json")
 function Auth(req, res){
     
   
-  console.log("------------------------------------------------------");
+  // console.log("------------------------------------------------------");
 
   let accessToken = '';
 
   // GET AUTHORIZATION CODE
   const code = req.query.code;
   //const code = req
-  console.log("code :", code);
+  // console.log("code :", code);
   let data
-  if(Data.dev){
+  
+  if(Data.dev==true){
     data = {
       "grant_type": "authorization_code",
       "client_id": 619,
@@ -31,7 +32,7 @@ function Auth(req, res){
     };
   }
   
-  console.log("------------------------------------------------------");
+  // console.log("------------------------------------------------------");
 
   let authURL = (Data.dev) ? "https://auth-dev.vatsim.net/oauth/token" : "https://auth.vatsim.net/oauth/token"
   fetch(authURL, {
@@ -44,14 +45,14 @@ function Auth(req, res){
   })
   .then(res => res.json())
   .then(tokenData => {
-    console.log('Token Response:', tokenData);
+    // console.log('Token Response:', tokenData);
 
     if (!tokenData || !tokenData.access_token) {
       throw new Error('Invalid token data');
     }
 
     accessToken = tokenData.access_token.toString();
-    console.log("Token Data:", tokenData);
+    // console.log("Token Data:", tokenData);
 
     // FETCH DATA
     
@@ -67,15 +68,17 @@ function Auth(req, res){
   .then(res => res.json())
   .then(userData => {
     // Use user data
-    console.log('User Data:', userData);
+    // console.log('User Data:', userData);
     let Data = JSON.stringify(userData);
     const encodedData = encodeURIComponent(JSON.stringify(Data));
-    if(Data.dev){
+
+    // console.log(Data.dev)
+    // if(Data.dev){
       res.redirect(`http://localhost:3000/extractor?data=${encodedData}`);
-    }
-    else{
-      res.redirect(`http://api.vatsim.ma:3000/extractor?data=${encodedData}`);
-    }
+    // }
+    // else{
+    //   res.redirect(`http://api.vatsim.ma:3000/extractor?data=${encodedData}`);
+    // }
   })
   .catch(error => {
     // Handle any errors

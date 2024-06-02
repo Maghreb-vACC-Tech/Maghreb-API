@@ -18,13 +18,13 @@ function BookingGetFunction( req , res){
   
         function handleMatch(item) {
           // process matched item
-          console.log(item);
+          // console.log(item);
         }
   
         res.send(BookingArray);
       })
       .catch( err => {
-        console.log(`Maghreb-API Event Error ; function BookingGetFunction()  ; err : ${err} `)
+        console.log(`Handled Error : ${err}`)
       })      
     }
 
@@ -45,15 +45,15 @@ function BookingSet(req , res ){
     
   .then(data => data.json())
   .then(data => {
-    console.log(`${JSON.stringify(data)}`)
-    console.log(`--------------------------------------------`)
-    console.log(`${JSON.stringify(bookingData)}`)
+    // console.log(`${JSON.stringify(data)}`)
+    // console.log(`--------------------------------------------`)
+    // console.log(`${JSON.stringify(bookingData)}`)
     if(data === bookingData) {
-      console.log("Booking Logged");
+      // console.log("Booking Logged");
       res.send(data);
     } 
     else {  
-      console.log("Booking Logging Error");
+      // console.log("Booking Logging Error");
       res.send(data);
     }
     }  
@@ -67,7 +67,7 @@ function BookingDelete(req, res) {
       const url = `https://atc-bookings.vatsim.net/api/booking/${JSON.stringify(postData.id)}`; // Replace with your API endpoint URL
 
     
-      console.log(`Delete ${JSON.stringify(postData)}`)
+      // console.log(`Delete ${JSON.stringify(postData)}`)
       
       fetch(url, {
         method: 'DELETE',
@@ -78,7 +78,7 @@ function BookingDelete(req, res) {
         body: JSON.stringify(postData)
         })
 
-        console.log("Delete")
+        // console.log("Delete")
     }
 
 
