@@ -1,4 +1,4 @@
-const Data = require("../MaghrebSetup.json")
+
 const sqlite3 = require('sqlite3').verbose();
 //const mysql = require('mysql2')
 /*
@@ -19,57 +19,7 @@ let db = new sqlite3.Database('maghreb.db');
 
 function MembershipDBRefresh(req, res){
   
-  db.all(`Delete from members`, [], (err, rows) => {
-    if (err) {
-      console.log(`Handled Error : ${err}`);
-    }
-    
-  });
-
-  
-  fetch((Data.dev) ? "http://localhost:1000/members" : "https://api.vatsim.ma/members")
-  .then(response => response.json())
-  .then(response => {
-    response.forEach(member => {
-
-      const ratingMap = {
-        '-1': 'INA',
-        1: 'OBS',
-        2: 'S1',
-        3: 'S2',
-        4: 'S3',
-        5: 'C1',
-        6: 'C2',
-        7: 'C3',
-        8: 'I1',
-        9: 'I2',
-        10: 'I3',
-        11: 'SUP',
-        12: 'ADM',
-      };
-
-      
-
-
-    let sql = `
-    INSERT INTO members 
-    (CID, Name, Email, Location, Rating, lastratingchange, Approved, Privileges)
-     VALUES (${member.id}, '${member.name_first} ${member.name_last}', '${member.email}', '${member.countystate}(${member.country})', '${ratingMap[member.rating]}', '${member.lastratingchange}', '', '');
-    `;
-
-    db.all(sql, [], (err, rows) => {
-      if (err) {
-        console.log(`Handled Error : ${err}`);
-      }
-      
-    });
-
-
-
-
-    });
-    res.send("Membership Db is refreshed")
-  })
+ 
 }
 
 async function MembersGet(req, res) {

@@ -1,5 +1,5 @@
 // Environement
-const Data = require("./MaghrebSetup.json")
+// const Data = require("./MaghrebSetup.json")
 
 const express = require('express')
 const cors = require('cors');
@@ -8,7 +8,6 @@ const bodyParser = require('body-parser');
 //SSL
 const https = require('https');
 const fs = require('fs');
-
 
 
 const sqlite3 = require('sqlite3').verbose();
@@ -73,7 +72,12 @@ db.all(sql, [], (err, rows) => {
 
 
 
+require('dotenv').config()
+
+
 var app = express();
+
+console.log(process.env.APP_ENV)
 
 
 // Configure body-parser middleware
@@ -86,7 +90,7 @@ app.use(cors({origin: '*'}));
 // This responds with "Hello World" on the homepage
 let options = {};
 
-if(!Data.dev){
+if(process.env.APP_ENV == "PROD"){
 
   options = {
     key: fs.readFileSync('/etc/letsencrypt/live/api.vatsim.ma/privkey.pem'),
@@ -119,7 +123,84 @@ app.get('/VatsimEvents', Events.VatsimEvent);
 app.get('/metarLookup/:airport', Metar.Metar);
 
 // OAuth2.0
-app.get('/authcode' , Auth2.Auth)
+app.get('/authcode' , (req,res)=>{
+  let accessToken = '';
+
+  // GET AUTHORIZATION CODE
+  const code = req.query.code;
+
+  let data
+  
+  if(process.env.APP_ENV == "DEV"){
+    data = {
+      "grant_type": "authorization_code",
+      "client_id": 619,
+      "client_secret": "ZK9lA32BOoEq4BxpYCjtHrnz0KM9MwOetHWbRtxE",
+      "redirect_uri": "http://localhost:1000/authcode",
+      code,
+    };
+  }
+  else{
+    data = {
+      "grant_type": "authorization_code",
+      "client_id": 1284,
+      "client_secret": "yqbhSRb13MMg5lQltuOLtapENJiTHpJiIjPylvS4",
+      "redirect_uri": "https://api.vatsim.ma/authcode",
+      code,
+    };
+  }
+
+  let authURL = (process.env.APP_ENV=="DEV") ? "https://auth-dev.vatsim.net/oauth/token" : "https://auth.vatsim.net/oauth/token"
+  
+  fetch(authURL, {
+    method: 'POST',
+    headers: {
+      'Accept': 'application/json',
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(data)
+  })
+  .then(res => res.json())
+  .then(tokenData => {
+
+    if (!tokenData || !tokenData.access_token) {
+      throw new Error('Invalid token data');
+    }
+
+    accessToken = tokenData.access_token.toString();
+
+    // FETCH DATA
+    
+    let APIUSERURL = (process.env.APP_ENV=="DEV") ? "https://auth-dev.vatsim.net/api/user" : "https://auth.vatsim.net/api/user"
+    return fetch(APIUSERURL, {
+      method: 'GET',
+      headers: {
+        'Authorization': `Bearer ${accessToken}`,
+        'Accept': 'application/json'
+      },
+    });
+  })
+  .then(res => res.json())
+  .then(userData => {
+    // Use user data
+    let Data = JSON.stringify(userData);
+    const encodedData = encodeURIComponent(JSON.stringify(Data));
+
+    if(process.env.APP_ENV=="DEV"){
+      res.redirect(`http://localhost:3000/extractor?data=${encodedData}`);
+    }
+    else{
+      res.redirect(`http://api.vatsim.ma:3000/extractor?data=${encodedData}`);
+    }
+  })
+  .catch(error => {
+    // Handle any errors
+    console.error(error);
+    res.status(500).send('Internal Server Error');
+  });
+
+
+})
 
 // Booking
 app.get('/MaghrebBooking' , Booking.BookingGetFunction)
@@ -128,7 +209,60 @@ app.delete('/DeleteMaghrebBooking',Booking.BookingDelete)
 
 // Membership
 app.get('/members', Membership.MembersGet)
-app.get('/MembershipDBRefresh' , Membership.MembershipDBRefresh)
+app.get('/MembershipDBRefresh' , (req,res)=>{
+
+  db.all(`Delete from members`, [], (err, rows) => {
+    if (err) {
+      console.log(`Handled Error : ${err}`);
+    }
+    
+  });
+
+  
+  fetch((process.env.APP_ENV=="DEV") ? "http://localhost:1000/members" : "https://api.vatsim.ma/members")
+  .then(response => response.json())
+  .then(response => {
+    response.forEach(member => {
+
+      const ratingMap = {
+        '-1': 'INA',
+        1: 'OBS',
+        2: 'S1',
+        3: 'S2',
+        4: 'S3',
+        5: 'C1',
+        6: 'C2',
+        7: 'C3',
+        8: 'I1',
+        9: 'I2',
+        10: 'I3',
+        11: 'SUP',
+        12: 'ADM',
+      };
+
+      
+
+
+    let sql = `
+    INSERT INTO members 
+    (CID, Name, Email, Location, Rating, lastratingchange, Approved, Privileges)
+     VALUES (${member.id}, '${member.name_first} ${member.name_last}', '${member.email}', '${member.countystate}(${member.country})', '${ratingMap[member.rating]}', '${member.lastratingchange}', '', '');
+    `;
+
+    db.all(sql, [], (err, rows) => {
+      if (err) {
+        console.log(`Handled Error : ${err}`);
+      }
+      
+    });
+
+
+
+
+    });
+    res.send("Membership Db is refreshed")
+  })
+})
 app.get('/MembersGetDB' , Membership.MembersGetDB)
 app.get('/MembersGetConnectionLog/:id' ,Membership.MemberHistory )
 
@@ -157,7 +291,7 @@ app.post('/SetSettings' , Settings.SetSettingCID)
 */
 
 
-if(Data.dev) {
+if(process.env.APP_ENV == "DEV") {
   var server = app.listen(1000, function () {
     var host = server.address().address
     var port = server.address().port
