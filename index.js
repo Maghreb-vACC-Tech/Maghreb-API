@@ -27,7 +27,7 @@ const Weather = require('./services/Weather')
 const AviationGov = require('./services/AviationGov')
 const Notams = require('./services/Notams')
 const ARPInfo = require('./services/AirportInfo/AirportInfo')
-//const Settings = require('./services/Settings')
+// const Settings = require('./services/Settings')
 
 
 //Connexion Base de donnees
@@ -284,11 +284,86 @@ app.get('/AGTAF/:airport' , AviationGov.GetTAF)
 
 
 // Settings
-/*
-app.get('/Setting/:CID' , Settings.GetSettingCID)
+app.get('/GetSetting/:CID' , (req,res)=>{
+    
+  let SQLCreateQuery=`CREATE TABLE "Settings" (
+  "CID"	INTEGER NOT NULL UNIQUE,
+  "SimbriefAlias"	TEXT,
+  PRIMARY KEY("CID"))`
 
-app.post('/SetSettings' , Settings.SetSettingCID)
-*/
+  db.all(SQLCreateQuery, [], (err, rows) => {
+      if (err) {
+        console.log("------------message:'Settings table exists'------------ ");
+        
+      }
+      else{
+        console.log('("------------Settings Table created successfully!------------');
+      }
+    });
+
+    
+  const CID = req.params.CID
+
+  let SQLGetQuery=`SELECT * FROM Settings WHERE CID=${CID}`
+  
+  console.log(SQLGetQuery)
+    db.all(SQLGetQuery, [], (err, rows) => {
+      if (err) {
+        console.log(err);
+      }
+      else{
+        res.send(rows);
+      }
+    });
+
+
+
+
+  })
+
+
+
+app.post('/SetSettings' , (req,res)=>{
+  
+  const Settings = req.body;
+
+  let SQLSetQuery=`INSERT INTO Settings (CID , SimbriefAlias) Values(${Settings.CID},'${Settings.SimbriefAlias}')`
+
+
+  db.all(SQLSetQuery, [], (err, rows) => {
+      if (err) {
+        console.log(`----------- ${Settings.CID} Created their settings------------- `);
+        
+      }
+      else{
+        console.log('("------------Settings Table created successfully!------------');
+      }
+    });
+  
+
+})
+app.put('/UpdateSettings' , (req , res)=>{
+  const Settings = req.body;
+  console.table(Settings)
+  let SQLUpdateQuery = `
+  UPDATE Settings
+  SET SimbriefAlias = '${Settings.SimbriefAlias}'
+  WHERE CID = ${Settings.CID}
+`;
+
+
+db.all(SQLUpdateQuery, [], (err, rows) => {
+  if (err) {
+    console.log(`----------- ${Settings.CID} Updated their settings------------- `);
+    
+  }
+  else{
+    console.log('("------------Settings Table created successfully!------------');
+  }
+});
+
+})
+
 
 
 if(process.env.APP_ENV == "DEV") {
