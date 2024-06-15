@@ -85,8 +85,14 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
 // Configure CORS
-app.use(cors());
-app.use(cors({origin: '*'}));
+// app.use(cors());
+app.use(cors({
+  origin: '*',
+  methods: ['GET', 'POST', 'PUT', 'DELETE'],
+}));
+// app.use(cors({
+//   origin: 'http://localhost:3000'
+// }));
 // This responds with "Hello World" on the homepage
 let options = {};
 
@@ -344,25 +350,44 @@ app.post('/SetSettings' , (req,res)=>{
 })
 app.put('/UpdateSettings' , (req , res)=>{
   const Settings = req.body;
+
   console.table(Settings)
+  
   let SQLUpdateQuery = `
   UPDATE Settings
   SET SimbriefAlias = '${Settings.SimbriefAlias}'
   WHERE CID = ${Settings.CID}
-`;
+  `;
 
 
-db.all(SQLUpdateQuery, [], (err, rows) => {
-  if (err) {
-    console.log(`----------- ${Settings.CID} Updated their settings------------- `);
-    
-  }
-  else{
-    console.log('("------------Settings Table created successfully!------------');
-  }
-});
+  db.all(SQLUpdateQuery, [], (err, rows) => {
+    if (err) {
+      console.log(`----------- ${Settings.CID} Updated their settings------------- `);
+      
+    }
+    else{
+      console.log('("------------Settings Table created successfully!------------');
+    }
+  });
 
 })
+
+app.post('/Log', (req, res) => {
+  
+  res.set('Access-Control-Allow-Origin', '*');
+  const content = JSON.stringify(req.body);
+  fs.appendFile('./Log', '\n' + content, (err) => {
+    if (err) {
+      console.error(err);
+      res.status(500).send('Error logging data');
+    } else {
+      res.send('Logged correctly');
+    }
+  });
+});
+
+
+
 
 
 
