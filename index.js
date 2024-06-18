@@ -77,22 +77,17 @@ require('dotenv').config()
 
 var app = express();
 
-console.log(process.env.APP_ENV)
-
 
 // Configure body-parser middleware
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
 // Configure CORS
-// app.use(cors());
 app.use(cors({
   origin: '*',
 }));
-// app.use(cors({
-//   origin: 'http://localhost:3000'
-// }));
-// This responds with "Hello World" on the homepage
+
+
 let options = {};
 
 if(process.env.APP_ENV == "PROD"){
@@ -103,6 +98,12 @@ if(process.env.APP_ENV == "PROD"){
   };
 
 }
+
+
+
+
+console.log(`APP Environement : ${process.env.APP_ENV}`)
+
 
 
 // Notam
